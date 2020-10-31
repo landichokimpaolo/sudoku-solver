@@ -7,11 +7,11 @@
 Specify the path of the maze file
 
 ```bash
-$ python sudoku.py "boards/board1.txt"
+$ python boards/board1.txt "boards/board1.txt"
 ```
 
 ## Creating your own sudoku
-See file mazes/maze1.txt for reference
+See file boards/board1.txt for reference
 
 ## Output - Screenshot
 Returns a image file of the solved sudoku
