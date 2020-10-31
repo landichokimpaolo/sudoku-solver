@@ -8,7 +8,6 @@ class Sudoku:
     def __init__(self):
         self.board = []
         self.tiles = []
-        self.recursion = 0
         sys.setrecursionlimit(10000)
 
     def build(self):
@@ -79,7 +78,6 @@ class Sudoku:
                 if self.valid(n, (row, col)):
                     self.board[row][col] = n
                     self.solve(t + 1)
-                    self.recursion += 1
                     break
             else:
                 row, col = self.tiles[t - 1]
