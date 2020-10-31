@@ -8,6 +8,7 @@ class Sudoku:
     def __init__(self):
         self.board = []
         self.tiles = []
+        self.recursion = 0
         sys.setrecursionlimit(10000)
 
     def build(self):
@@ -40,23 +41,17 @@ class Sudoku:
 
             for ck, cv in enumerate(rv):
                 gc = 2 if ck % 3 == 0 and ck != 0 else 0
-                tile = (234, 231, 230) if cv != 0 else (255, 255, 255)
                 value = str(cv) if cv != 0 else ' '
                 position = [(ck * bs) + gc, (rk * bs) + gr, (ck + 1) * bs, (rk + 1) * bs]
+                background = (234, 231, 230) if (rk, ck) not in self.tiles else (255, 255, 255)
 
-                drw.rectangle(position, tile, outline=(0, 0, 0))
+                drw.rectangle(position, background, outline=(0, 0, 0))
                 drw.text(((ck * bs) + 30, (rk * bs) + 20), value, font=font, fill=(0, 0, 0))
 
         img.show()
 
-    def get_row(self, row):
-        return [self.board[row][n] for n in range(9)]
-
-    def get_col(self, col):
-        return [self.board[n][col] for n in range(9)]
-
     def get_grid(self, row, col):
-        rs, cs = math.floor(row / 3) * 3, math.floor(col / 3) * 3
+        rs, cs = (row // 3) * 3, (col // 3) * 3
         re, ce = rs + 3, cs + 3
         tmp = []
 
@@ -71,8 +66,8 @@ class Sudoku:
 
     def valid(self, n, current):
         row, col = current
-        if n not in self.get_row(row):
-            if n not in self.get_col(col):
+        if n not in [self.board[row][n] for n in range(9)]:
+            if n not in [self.board[n][col] for n in range(9)]:
                 if n not in self.get_grid(row, col):
                     return True
         return False
@@ -84,6 +79,7 @@ class Sudoku:
                 if self.valid(n, (row, col)):
                     self.board[row][col] = n
                     self.solve(t + 1)
+                    self.recursion += 1
                     break
             else:
                 row, col = self.tiles[t - 1]
