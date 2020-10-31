@@ -7,7 +7,7 @@
 Specify the path of the sudoku file
 
 ```bash
-$ python boards/board1.txt "boards/board1.txt"
+$ python sudoku.py "boards/board1.txt"
 ```
 
 ## Creating your own sudoku
