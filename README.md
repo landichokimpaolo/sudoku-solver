@@ -4,7 +4,7 @@
 - [Pillow](https://github.com/python-pillow/Pillow)
 
 ## How to use?
-Specify the path of the maze file
+Specify the path of the sudoku file
 
 ```bash
 $ python boards/board1.txt "boards/board1.txt"
