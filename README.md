@@ -7,7 +7,7 @@
 Specify the path of the maze file
 
 ```bash
-$ python3 sudoky.py "boards/board1.txt"
+$ python sudoku.py "boards/board1.txt"
 ```
 
 ## Creating your own sudoku
