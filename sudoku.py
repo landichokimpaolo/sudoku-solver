@@ -8,11 +8,10 @@ class Sudoku:
     def __init__(self):
         self.board = []
         self.tiles = []
-        self.ctr = -1
-        self.prev = 0
+        sys.setrecursionlimit(10000)
 
     def build(self):
-        with open('/Users/kim/Sites/python/sudoku/boards/board1.txt', 'r') as file:
+        with open(sys.argv[1], 'r') as file:
             row = 0
             column = []
             for char in file.read():
@@ -34,7 +33,7 @@ class Sudoku:
 
         img = Image.new('RGB', dimension)
         drw = ImageDraw.Draw(img)
-        font = ImageFont.truetype('/Users/kim/Sites/python/sudoku/assets/Lato-Bold.ttf', 25)
+        font = ImageFont.truetype('assets/Lato-Bold.ttf', 25)
 
         for rk, rv in enumerate(self.board):
             gr = 2 if rk % 3 == 0 and rk != 0 else 0
@@ -68,7 +67,7 @@ class Sudoku:
         return tmp
 
     def get_next(self, n):
-        return (n + 1, n + 2) if n + 1 in range(1, 10) else (1, 2)
+        return n + 1 if n + 1 in range(1, 10) else 10
 
     def valid(self, n, current):
         row, col = current
@@ -78,39 +77,23 @@ class Sudoku:
                     return True
         return False
 
-    def solve(self, t=0, start=1, end=10):
-        row, col = self.tiles[t]
-
-        self.ctr += 1
-        self.visualize()
-        time.sleep(.4)
-
-        if self.ctr < 5:
-            possible = 0
-            for n in range(start, end):
+    def solve(self, t=0, s=1):
+        if t < len(self.tiles):
+            row, col = self.tiles[t]
+            for n in range(s, 10):
                 if self.valid(n, (row, col)):
-                    possible = n
+                    self.board[row][col] = n
+                    self.solve(t + 1)
                     break
-
-            if possible != 0:
-                self.board[row][col] = possible
-                self.solve(t + 1)
             else:
-                t = max(0, t - 1)
-
-                row, col = self.tiles[t]
-                value = self.board[row][col]
-
-                if t == 0 and value == 0:
-                    self.board[row][col] = start
-                    value = start
-
-                start, end = self.get_next(value)
+                row, col = self.tiles[t - 1]
+                v = self.board[row][col]
+                s = self.get_next(v)
                 self.board[row][col] = 0
-                self.solve(t, start, end)
-
+                self.solve(t - 1, s)
 
 if __name__ == '__main__':
     sudoku = Sudoku()
     sudoku.build()
     sudoku.solve()
+    sudoku.visualize()
